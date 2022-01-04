@@ -2,19 +2,21 @@
 
 namespace LeaFLib.Extensions.Core.Benchmark
 {
+    [MemoryDiagnoser]
     public class IListExtensionBenchmark
     {
-        private readonly IList<int> _items;
-
-        public IListExtensionBenchmark()
+        [Benchmark]
+        [ArgumentsSource(nameof(ShuffleItems))]
+        public void Shuffle(IList<int> items)
         {
-            _items = Enumerable.Range(1, 10000).ToArray();
+            items.Shuffle();
         }
 
-        [Benchmark]
-        public void Shuffle()
+        public IEnumerable<IList<int>> ShuffleItems()
         {
-            _items.Shuffle();
+            yield return Enumerable.Range(1, 1000).ToArray();
+            yield return Enumerable.Range(1, 10000).ToArray();
+            yield return Enumerable.Range(1, 10000).ToList();
         }
     }
 }
