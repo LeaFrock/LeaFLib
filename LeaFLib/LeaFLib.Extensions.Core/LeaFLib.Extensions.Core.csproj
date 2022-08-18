@@ -21,4 +21,8 @@
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <Folder Include="Internal\" />
+	</ItemGroup>
+
 </Project>
