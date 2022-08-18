@@ -1,4 +1,7 @@
-﻿namespace LeaFLib.Extensions.Core
+﻿using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
+namespace LeaFLib.Extensions.Core
 {
     /// <summary>
     /// Extensions for <see cref="IList{T}"/>
@@ -222,18 +225,15 @@
             for (int i = 0; i < length; i++)
             {
                 int randIdx = rand.Next(source.Count - i);
-                result[currentIdx] = skipDict.TryGetValue(randIdx, out var actualIdx)
-                    ? source[actualIdx]
+                ref int actualIndex = ref CollectionsMarshal.GetValueRefOrAddDefault(skipDict, randIdx, out bool exisits);
+                result[currentIdx] = exisits
+                    ? source[actualIndex]
                     : source[randIdx];
                 int lastIdx = source.Count - 1 - i;
-                if (skipDict.TryGetValue(lastIdx, out actualIdx))
-                {
-                    skipDict[randIdx] = actualIdx;
-                }
-                else if (randIdx != lastIdx)
-                {
-                    skipDict[randIdx] = lastIdx;
-                }
+                ref int actualIdx4Last = ref CollectionsMarshal.GetValueRefOrNullRef(skipDict, lastIdx);
+                actualIndex = Unsafe.IsNullRef(ref actualIdx4Last)
+                    ? lastIdx
+                    : actualIdx4Last;
                 if (++currentIdx >= length)
                 {
                     break;
@@ -252,6 +252,10 @@
         /// <para>Time: O(N), N is the length of source.</para>
         /// <para>Space: O(1)</para>
         /// </summary>
+        /// <remarks>
+        /// The elements' order of result has an association with the source, especially when the result length is close to the source count.
+        /// If you want to get an totally unordered result, you can shuffle it then.
+        /// </remarks>
         ReservoirSampling = 0,
 
         /// <summary>

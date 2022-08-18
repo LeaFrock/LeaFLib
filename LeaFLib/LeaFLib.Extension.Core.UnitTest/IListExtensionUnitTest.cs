@@ -22,9 +22,9 @@ namespace LeaFLib.Extension.Core.UnitTest
         [InlineData(RandomManyUniqueAlgorithm.SkipDictionary, false)]
         public void RandomManyUnique(RandomManyUniqueAlgorithm algorithm, bool allowSourceModified)
         {
-            var origin = Enumerable.Range(1, 100).ToList();
+            var origin = Enumerable.Range(1, 10).ToList();
             var source = new List<int>(origin);
-            const int randomCount = 20;
+            const int randomCount = 5;
 
             var result = source.RandomManyUnique(randomCount, algorithm);
             int count = result.Distinct().Count();

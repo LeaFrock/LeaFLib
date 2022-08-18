@@ -3,13 +3,14 @@
 namespace LeaFLib.Extensions.Core.Benchmark
 {
     [MemoryDiagnoser]
-    public class IListExtensionBenchmark
+    public class IListExtensionBenchmark_Shuffle
     {
         [Benchmark]
         [ArgumentsSource(nameof(ShuffleItems))]
-        public void Shuffle(IList<int> items)
+        public IList<int> Shuffle(IList<int> items)
         {
             items.Shuffle();
+            return items;
         }
 
         public static IEnumerable<IList<int>> ShuffleItems()
