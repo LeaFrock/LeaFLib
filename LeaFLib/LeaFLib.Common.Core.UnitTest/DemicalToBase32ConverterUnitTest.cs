@@ -2,7 +2,7 @@ using Xunit;
 
 namespace LeaFLib.Common.Core.UnitTest
 {
-    public class NumberHelperUnitTest
+    public class DemicalToBase32ConverterUnitTest
     {
         [Theory]
         [InlineData(31, "v")]
@@ -11,8 +11,7 @@ namespace LeaFLib.Common.Core.UnitTest
         [InlineData(int.MaxValue, "1vvvvvv")]
         public void FormatInt32To32Base(int num, string expected)
         {
-            const string customAlphabet = "0123456789abcdefghijklmnopqrstuv";
-            string str = NumberHelper.FormatInt32To32Base(num, customAlphabet);
+            string str = DemicalToBase32Converter.Default.ToBase32String(num);
             Assert.Equal(expected, str);
         }
 
@@ -23,8 +22,7 @@ namespace LeaFLib.Common.Core.UnitTest
         [InlineData(long.MaxValue, "7vvvvvvvvvvvv")]
         public void FormatInt64To32Base(long num, string expected)
         {
-            const string customAlphabet = "0123456789abcdefghijklmnopqrstuv";
-            string str = NumberHelper.FormatInt64To32Base(num, customAlphabet);
+            string str = DemicalToBase32Converter.Default.ToBase32String(num);
             Assert.Equal(expected, str);
         }
     }
