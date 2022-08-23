@@ -96,6 +96,14 @@
             return chars[^1].ToString();
         }
 
+        public string ToString(DateTimeOffset dateTimeOffset, bool useMillisecond = false)
+        {
+            long num = useMillisecond
+                ? dateTimeOffset.ToUnixTimeMilliseconds()
+                : dateTimeOffset.ToUnixTimeSeconds();
+            return ToString(num);
+        }
+
         public int ToInt32(ReadOnlySpan<char> span)
         {
             const int header = 7;

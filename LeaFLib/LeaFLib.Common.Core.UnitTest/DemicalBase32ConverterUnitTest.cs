@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace LeaFLib.Common.Core.UnitTest
@@ -24,6 +25,18 @@ namespace LeaFLib.Common.Core.UnitTest
         {
             string str = DemicalBase32Converter.Default.ToString(num);
             Assert.Equal(expected, str);
+        }
+
+        [Fact]
+        public void DateTimeOffsetToString()
+        {
+            var dto = new DateTimeOffset(2022, 10, 1, 0, 0, 0, TimeSpan.FromHours(8));
+
+            string str1 = DemicalBase32Converter.Default.ToString(dto, false);
+            string str2 = DemicalBase32Converter.Default.ToString(dto, true);
+
+            Assert.Equal("1hje4k0", str1);
+            Assert.Equal("1ge7i0h00", str2);
         }
 
         [Theory]
