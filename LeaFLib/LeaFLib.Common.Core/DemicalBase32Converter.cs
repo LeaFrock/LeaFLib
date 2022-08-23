@@ -6,13 +6,13 @@
     /// <remarks>
     /// Similar to <strong>Demical to Hex</strong> or <strong>Demical to Binary</strong>.
     /// </remarks>
-    public sealed class DemicalToBase32Converter
+    public sealed class DemicalBase32Converter
     {
-        public static DemicalToBase32Converter Default { get; } = new("0123456789abcdefghijklmnopqrstuv");
+        public static DemicalBase32Converter Default { get; } = new("0123456789abcdefghijklmnopqrstuv");
 
         public string Alphabet { get; }
 
-        public DemicalToBase32Converter(string alphabet)
+        public DemicalBase32Converter(string alphabet)
         {
             ArgumentNullException.ThrowIfNull(alphabet);
             if (alphabet.Length != 32)
@@ -23,7 +23,7 @@
             Alphabet = alphabet;
         }
 
-        public string ToBase32String(int num)
+        public string ToString(int num)
         {
             if (num < 0)
             {
@@ -59,7 +59,7 @@
             return chars[^1].ToString();
         }
 
-        public string ToBase32String(long num)
+        public string ToString(long num)
         {
             if (num < 0L)
             {
@@ -96,18 +96,71 @@
             return chars[^1].ToString();
         }
 
-        public int ToInt32(ReadOnlySpan<char> chars)
+        public int ToInt32(ReadOnlySpan<char> span)
         {
-            throw new NotImplementedException();
+            const int header = 7;
+            CheckCharSpan(ref span, header, 1);
+
+            int result = 0, index;
+            for (int i = 1; i <= Math.Min(span.Length, header); i++)
+            {
+                index = Alphabet.IndexOf(span[^i]);
+                if (index < 0)
+                {
+                    throw new ArgumentException($"Char[{span.Length - i}] not found in the alphabet", nameof(span));
+                }
+                result |= index << ((i - 1) * 5);
+            }
+            return result;
         }
 
         public int ToInt32(string str) => ToInt32(str.AsSpan());
 
-        public long ToInt64(ReadOnlySpan<char> chars)
+        public long ToInt64(ReadOnlySpan<char> span)
         {
-            throw new NotImplementedException();
+            const int header = 13;
+            CheckCharSpan(ref span, header, 7);
+
+            long result = 0, index;
+            for (int i = 1; i <= Math.Min(span.Length, header); i++)
+            {
+                index = Alphabet.IndexOf(span[^i]);
+                if (index < 0)
+                {
+                    throw new ArgumentException($"Char[{span.Length - i}] not found in the alphabet", nameof(span));
+                }
+                result |= index << ((i - 1) * 5);
+            }
+            return result;
         }
 
         public long ToInt64(string str) => ToInt64(str.AsSpan());
+
+        private void CheckCharSpan(ref ReadOnlySpan<char> span, in int header, in int headerMaxValue)
+        {
+            if (span.Length < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(span), "The length is less than 1");
+            }
+            if (span.Length >= header)
+            {
+                int index = Alphabet.IndexOf(span[^header]);
+                if (index < 0)
+                {
+                    throw new ArgumentException($"Char[{span.Length - header}] not found in the alphabet", nameof(span));
+                }
+                if (index > headerMaxValue)
+                {
+                    throw new ArgumentException($"Char[{span.Length - header}] is invalid", nameof(span));
+                }
+                for (int i = 0; i < span.Length - header; i++)
+                {
+                    if (span[i] != Alphabet[0])
+                    {
+                        throw new ArgumentException($"Char[{i}] is not {Alphabet[0]}", nameof(span));
+                    }
+                }
+            }
+        }
     }
 }
