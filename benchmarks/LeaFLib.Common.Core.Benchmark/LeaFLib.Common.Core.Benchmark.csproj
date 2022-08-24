@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LeaFLib.Extensions.Core\LeaFLib.Extensions.Core.csproj" />
+    <ProjectReference Include="..\..\src\LeaFLib.Common.Core\LeaFLib.Common.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
     <IsPackable>false</IsPackable>
@@ -21,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LeaFLib.Common.Core\LeaFLib.Common.Core.csproj" />
+    <ProjectReference Include="..\..\src\LeaFLib.Extensions.Core\LeaFLib.Extensions.Core.csproj" />
   </ItemGroup>
 
 </Project>
