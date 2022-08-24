@@ -107,7 +107,7 @@
         public int ToInt32(ReadOnlySpan<char> span)
         {
             const int header = 7;
-            CheckCharSpan(ref span, header, 1);
+            ValidateCharSpan(ref span, header, 1);
 
             int result = 0, index;
             for (int i = 1; i <= Math.Min(span.Length, header); i++)
@@ -124,10 +124,36 @@
 
         public int ToInt32(string str) => ToInt32(str.AsSpan());
 
+        public bool TryToInt32(ReadOnlySpan<char> span, out int value)
+        {
+            const int header = 7;
+            if (!TryValidateCharSpan(ref span, header, 1))
+            {
+                value = default;
+                return false;
+            }
+
+            value = default;
+            int index;
+            for (int i = 1; i <= Math.Min(span.Length, header); i++)
+            {
+                index = Alphabet.IndexOf(span[^i]);
+                if (index < 0)
+                {
+                    value = default;
+                    return false;
+                }
+                value |= index << ((i - 1) * 5);
+            }
+            return true;
+        }
+
+        public bool TryToInt32(string str, out int value) => TryToInt32(str.AsSpan(), out value);
+
         public long ToInt64(ReadOnlySpan<char> span)
         {
             const int header = 13;
-            CheckCharSpan(ref span, header, 7);
+            ValidateCharSpan(ref span, header, 7);
 
             long result = 0, index;
             for (int i = 1; i <= Math.Min(span.Length, header); i++)
@@ -144,7 +170,33 @@
 
         public long ToInt64(string str) => ToInt64(str.AsSpan());
 
-        private void CheckCharSpan(ref ReadOnlySpan<char> span, in int header, in int headerMaxValue)
+        public bool TryToInt64(ReadOnlySpan<char> span, out long value)
+        {
+            const int header = 13;
+            if (!TryValidateCharSpan(ref span, header, 7))
+            {
+                value = default;
+                return false;
+            }
+
+            value = default;
+            long index;
+            for (int i = 1; i <= Math.Min(span.Length, header); i++)
+            {
+                index = Alphabet.IndexOf(span[^i]);
+                if (index < 0)
+                {
+                    value = default;
+                    return false;
+                }
+                value |= index << ((i - 1) * 5);
+            }
+            return true;
+        }
+
+        public bool TryToInt64(string str, out long value) => TryToInt64(str.AsSpan(), out value);
+
+        private void ValidateCharSpan(ref ReadOnlySpan<char> span, in int header, in int headerMaxValue)
         {
             if (span.Length < 1)
             {
@@ -169,6 +221,34 @@
                     }
                 }
             }
+        }
+
+        private bool TryValidateCharSpan(ref ReadOnlySpan<char> span, in int header, in int headerMaxValue)
+        {
+            if (span.Length < 1)
+            {
+                return false;
+            }
+            if (span.Length >= header)
+            {
+                int index = Alphabet.IndexOf(span[^header]);
+                if (index < 0)
+                {
+                    return false;
+                }
+                if (index > headerMaxValue)
+                {
+                    return false;
+                }
+                for (int i = 0; i < span.Length - header; i++)
+                {
+                    if (span[i] != Alphabet[0])
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     }
 }

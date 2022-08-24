@@ -62,5 +62,41 @@ namespace LeaFLib.Common.Core.UnitTest
             long num = DemicalBase32Converter.Default.ToInt64(str);
             Assert.Equal(expected, num);
         }
+
+        [Theory]
+        [InlineData(31, true, "v")]
+        [InlineData(32, true, "10")]
+        [InlineData(1641385434, true, "1gtb3eq")]
+        [InlineData(int.MaxValue, true, "0000001vvvvvv")]
+        [InlineData(0, false, "0011234567")]
+        [InlineData(0, false, "1-vvvvv")]
+        [InlineData(0, false, "2vvvvvv")]
+        public void StringTryToInt32(int expectedNum, bool canParse, string str)
+        {
+            bool parseResult = DemicalBase32Converter.Default.TryToInt32(str, out int num);
+            Assert.Equal(canParse, parseResult);
+            if (canParse)
+            {
+                Assert.Equal(expectedNum, num);
+            }
+        }
+
+        [Theory]
+        [InlineData(31L, true, "v")]
+        [InlineData(32L, true, "10")]
+        [InlineData(1641385434L, true, "1gtb3eq")]
+        [InlineData(long.MaxValue, true, "0000007vvvvvvvvvvvv")]
+        [InlineData(-1, false, "0011234567890abc")]
+        [InlineData(-1, false, "8vvvvvvvvvvvv")]
+        [InlineData(-1, false, "7-vvvvvvvvvvv")]
+        public void StringTryToInt64(long expectedNum, bool canParse, string str)
+        {
+            bool parseResult = DemicalBase32Converter.Default.TryToInt64(str, out long num);
+            Assert.Equal(canParse, parseResult);
+            if (canParse)
+            {
+                Assert.Equal(expectedNum, num);
+            }
+        }
     }
 }
