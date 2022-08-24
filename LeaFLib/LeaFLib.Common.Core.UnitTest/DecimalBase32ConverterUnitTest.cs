@@ -3,7 +3,7 @@ using Xunit;
 
 namespace LeaFLib.Common.Core.UnitTest
 {
-    public class DemicalBase32ConverterUnitTest
+    public class DecimalBase32ConverterUnitTest
     {
         [Theory]
         [InlineData(31, "v")]
@@ -12,7 +12,7 @@ namespace LeaFLib.Common.Core.UnitTest
         [InlineData(int.MaxValue, "1vvvvvv")]
         public void Int32ToString(int num, string expected)
         {
-            string str = DemicalBase32Converter.Default.ToString(num);
+            string str = DecimalBase32Converter.Default.ToString(num);
             Assert.Equal(expected, str);
         }
 
@@ -23,7 +23,7 @@ namespace LeaFLib.Common.Core.UnitTest
         [InlineData(long.MaxValue, "7vvvvvvvvvvvv")]
         public void Int64ToString(long num, string expected)
         {
-            string str = DemicalBase32Converter.Default.ToString(num);
+            string str = DecimalBase32Converter.Default.ToString(num);
             Assert.Equal(expected, str);
         }
 
@@ -32,8 +32,8 @@ namespace LeaFLib.Common.Core.UnitTest
         {
             var dto = new DateTimeOffset(2022, 10, 1, 0, 0, 0, TimeSpan.FromHours(8));
 
-            string str1 = DemicalBase32Converter.Default.ToString(dto, false);
-            string str2 = DemicalBase32Converter.Default.ToString(dto, true);
+            string str1 = DecimalBase32Converter.Default.ToString(dto, false);
+            string str2 = DecimalBase32Converter.Default.ToString(dto, true);
 
             Assert.Equal("1hje4k0", str1);
             Assert.Equal("1ge7i0h00", str2);
@@ -47,7 +47,7 @@ namespace LeaFLib.Common.Core.UnitTest
         [InlineData(int.MaxValue, "0000001vvvvvv")]
         public void StringToInt32(int expected, string str)
         {
-            int num = DemicalBase32Converter.Default.ToInt32(str);
+            int num = DecimalBase32Converter.Default.ToInt32(str);
             Assert.Equal(expected, num);
         }
 
@@ -59,7 +59,7 @@ namespace LeaFLib.Common.Core.UnitTest
         [InlineData(long.MaxValue, "0000007vvvvvvvvvvvv")]
         public void StringToInt64(long expected, string str)
         {
-            long num = DemicalBase32Converter.Default.ToInt64(str);
+            long num = DecimalBase32Converter.Default.ToInt64(str);
             Assert.Equal(expected, num);
         }
 
@@ -73,7 +73,7 @@ namespace LeaFLib.Common.Core.UnitTest
         [InlineData(0, false, "2vvvvvv")]
         public void StringTryToInt32(int expectedNum, bool canParse, string str)
         {
-            bool parseResult = DemicalBase32Converter.Default.TryToInt32(str, out int num);
+            bool parseResult = DecimalBase32Converter.Default.TryToInt32(str, out int num);
             Assert.Equal(canParse, parseResult);
             if (canParse)
             {
@@ -91,7 +91,7 @@ namespace LeaFLib.Common.Core.UnitTest
         [InlineData(-1, false, "7-vvvvvvvvvvv")]
         public void StringTryToInt64(long expectedNum, bool canParse, string str)
         {
-            bool parseResult = DemicalBase32Converter.Default.TryToInt64(str, out long num);
+            bool parseResult = DecimalBase32Converter.Default.TryToInt64(str, out long num);
             Assert.Equal(canParse, parseResult);
             if (canParse)
             {

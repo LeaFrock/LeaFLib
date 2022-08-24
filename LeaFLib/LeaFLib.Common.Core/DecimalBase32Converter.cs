@@ -6,13 +6,13 @@
     /// <remarks>
     /// Similar to <strong>Demical to Hex</strong> or <strong>Demical to Binary</strong>.
     /// </remarks>
-    public sealed class DemicalBase32Converter
+    public sealed class DecimalBase32Converter
     {
-        public static DemicalBase32Converter Default { get; } = new("0123456789abcdefghijklmnopqrstuv");
+        public static DecimalBase32Converter Default { get; } = new("0123456789abcdefghijklmnopqrstuv");
 
         public string Alphabet { get; }
 
-        public DemicalBase32Converter(string alphabet)
+        public DecimalBase32Converter(string alphabet)
         {
             ArgumentNullException.ThrowIfNull(alphabet);
             if (alphabet.Length != 32)
