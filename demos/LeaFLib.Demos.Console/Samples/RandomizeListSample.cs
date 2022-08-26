@@ -61,7 +61,7 @@ namespace LeaFLib.Demos.Console.Samples
 
     internal sealed partial class RandomizeListSample
     {
-        private readonly Random Random = new();
+        private readonly Random Random = Random.Shared;
         private readonly int[] Template;
 
         public RandomizeListSample(int rank, int times)
@@ -118,14 +118,13 @@ namespace LeaFLib.Demos.Console.Samples
             }
         }
 
-        internal static void ShuffleCore<T>(List<T> source)
+        internal void ShuffleCore<T>(List<T> source)
         {
             int total = source.Count;
             int randIndex, tailIndex = total - 1;
-            var rand = Random.Shared;
             for (int i = 0; i < total - 1; i++)
             {
-                randIndex = rand.Next(0, tailIndex + 1);
+                randIndex = Random.Next(0, tailIndex + 1);
                 if (randIndex != tailIndex)
                 {
                     (source[randIndex], source[tailIndex]) = (source[tailIndex], source[randIndex]);

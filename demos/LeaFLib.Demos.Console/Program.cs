@@ -4,7 +4,7 @@ using LeaFLib.Demos.Console.Samples;
 
 Console.WriteLine("App Starts...");
 
-ISample sample = new RandomizeListSample(10, 10000);
+ISample sample = new RandomizeListSample(16, 16000);
 await sample.RunAsync();
 
 Console.WriteLine("App Ends...");
