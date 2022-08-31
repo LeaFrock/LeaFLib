@@ -11,6 +11,7 @@ on:
       - "tests/**/*.csproj"
       - ".github/workflows/dotnet.yml"
       - "!benchmarks/**"
+      - "!demos/**"
       - "!.gitattributes"
       - "!.gitignore"
       - "!LICENSE"
