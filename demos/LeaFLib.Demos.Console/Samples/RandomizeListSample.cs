@@ -9,13 +9,15 @@ namespace LeaFLib.Demos.Console.Samples
         {
             var table1 = Shuffle();
             var table2 = Shuffle_OrderBy();
-            var table3 = Shuffle_Sort();
+            var table3 = Shuffle_OrderBy_Guid();
+            var table4 = Shuffle_Sort();
 
             ExportFile(new KeyValuePair<string, int[,]>[]
             {
                 new(nameof(Shuffle), table1),
                 new(nameof(Shuffle_OrderBy), table2),
-                new(nameof(Shuffle_Sort), table3),
+                new(nameof(Shuffle_OrderBy_Guid), table3),
+                new(nameof(Shuffle_Sort), table4),
             });
 
             return Task.CompletedTask;
@@ -93,6 +95,18 @@ namespace LeaFLib.Demos.Console.Samples
             for (int i = 0; i < Times; i++)
             {
                 var source = new List<int>(Template).OrderBy(_ => Random.Next()).ToList();
+                Fill(table, source);
+            }
+            return table;
+        }
+
+        public int[,] Shuffle_OrderBy_Guid()
+        {
+            int[,] table = new int[Rank, Rank];
+            for (int i = 0; i < Times; i++)
+            {
+                // https://github.com/dotnet/runtime/issues/42752
+                var source = new List<int>(Template).OrderBy(_ => Guid.NewGuid()).ToList();
                 Fill(table, source);
             }
             return table;
