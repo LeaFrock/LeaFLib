@@ -141,6 +141,7 @@ namespace LeaFLib.Extensions.Core
                 RandomManyUniqueAlgorithm.SelectionSampling => source.RandomManyUniqueBySelectionSampling(length),
                 RandomManyUniqueAlgorithm.Shuffle => source.RandomManyUniqueByShuffle(length),
                 RandomManyUniqueAlgorithm.SkipDictionary => source.RandomManyUniqueBySkipDictionary(length),
+                RandomManyUniqueAlgorithm.HashSet => source.RandomManyUniqueByHashSet(length),
 
                 _ => throw new NotImplementedException($"Invalid algorithm[{algorithm}]")
             };
@@ -266,6 +267,37 @@ namespace LeaFLib.Extensions.Core
             }
             return result;
         }
+
+        private static T[] RandomManyUniqueByHashSet<T>(this IList<T> source, int length)
+        {
+            T[] result = new T[length];
+            int randomCount = Math.Min(source.Count - length, length);
+            var indexSet = new HashSet<int>(randomCount);
+            var rand = Random.Shared;
+            while (indexSet.Count < randomCount)
+            {
+                indexSet.Add(rand.Next(source.Count));
+            }
+            int index = 0;
+            if (randomCount == length)
+            {
+                foreach (var idx in indexSet)
+                {
+                    result[index++] = source[idx];
+                }
+            }
+            else
+            {
+                for (int i = 0; i < source.Count; i++)
+                {
+                    if (!indexSet.Contains(i))
+                    {
+                        result[index++] = source[i];
+                    }
+                }
+            }
+            return result;
+        }
     }
 
     /// <summary>
@@ -281,7 +313,7 @@ namespace LeaFLib.Extensions.Core
         /// The elements' order of result has an association with the source, especially when the result length is close to the source count.
         /// If you want to get an totally unordered result, you can shuffle it then.
         /// </remarks>
-        ReservoirSampling = 0,
+        ReservoirSampling = 1,
 
         /// <summary>
         /// A special case of <strong>Reservoir Sampling</strong>.
@@ -293,7 +325,7 @@ namespace LeaFLib.Extensions.Core
         /// If you want to get an unordered result, you can shuffle it then.
         /// <para>Also see <seealso href="https://stackoverflow.com/questions/48087/select-n-random-elements-from-a-listt-in-c-sharp"/>.</para>
         /// </remarks>
-        SelectionSampling = 1,
+        SelectionSampling = 2,
 
         /// <summary>
         /// <para>Time: O(M), M is the length of result.</para>
@@ -304,12 +336,21 @@ namespace LeaFLib.Extensions.Core
         /// If you don't want to modify the source, you should create a new list of source,
         /// such as <c>new <see cref="List{T}"/>(source)</c>.
         /// </remarks>
-        Shuffle = 2,
+        Shuffle = 3,
 
         /// <summary>
         /// <para>Time: O(M), M is the length of result.</para>
         /// <para>Space: O(M), M is the length of result.</para>
         /// </summary>
-        SkipDictionary = 3,
+        SkipDictionary = 4,
+
+        /// <summary>
+        /// <para>Time: O(M) when M is less than N/2; O(N) when M is greater than N/2</para>
+        /// <para>Space: O(M) when M is less than N/2; O(N-M) when M is greater than N/2</para>
+        /// </summary>
+        /// <remarks>
+        /// If M is less than N/2, the result is unordered; otherwise the result is in order.
+        /// </remarks>
+        HashSet = 5,
     }
 }

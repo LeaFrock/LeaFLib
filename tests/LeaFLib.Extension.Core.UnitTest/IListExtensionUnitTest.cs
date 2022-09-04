@@ -37,16 +37,17 @@ namespace LeaFLib.Extension.Core.UnitTest
         [InlineData(RandomManyUniqueAlgorithm.SelectionSampling, false)]
         [InlineData(RandomManyUniqueAlgorithm.Shuffle, true)]
         [InlineData(RandomManyUniqueAlgorithm.SkipDictionary, false)]
+        [InlineData(RandomManyUniqueAlgorithm.HashSet, false)]
         public void RandomManyUnique(RandomManyUniqueAlgorithm algorithm, bool allowSourceModified)
         {
             var origin = Enumerable.Range(1, 10).ToList();
             var source = new List<int>(origin);
-            const int randomCount = 5;
+            const int targetLength = 5;
 
-            var result = source.RandomManyUnique(randomCount, algorithm);
+            var result = source.RandomManyUnique(targetLength, algorithm);
             int count = result.Distinct().Count();
 
-            Assert.Equal(randomCount, result.Length);
+            Assert.Equal(targetLength, result.Length);
             Assert.Equal(result.Length, count);
             if (!allowSourceModified)
             {
