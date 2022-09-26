@@ -1,4 +1,6 @@
-﻿namespace LeaFLib.Common.Core
+﻿using System.Buffers;
+
+namespace LeaFLib.Common.Core
 {
     public static class StringHelper
     {
@@ -21,11 +23,18 @@
             }
 
             int byteCount = length * 6 / 8;
-            Span<byte> bytes = byteCount <= 512
-                ? stackalloc byte[byteCount]
-                : new byte[byteCount];
-            Random.Shared.NextBytes(bytes);
-            return Convert.ToBase64String(bytes);
+            if (byteCount <= 512)
+            {
+                Span<byte> shortBytes = stackalloc byte[byteCount];
+                Random.Shared.NextBytes(shortBytes);
+                return Convert.ToBase64String(shortBytes);
+            }
+            var rentBytes = ArrayPool<byte>.Shared.Rent(byteCount);
+            var longBytes = rentBytes.AsSpan(0, byteCount);
+            Random.Shared.NextBytes(longBytes);
+            string result = Convert.ToBase64String(longBytes);
+            ArrayPool<byte>.Shared.Return(rentBytes);
+            return result;
         }
     }
 }
