@@ -17,7 +17,7 @@ namespace LeaFLib.Common.Core.Benchmark
         [Benchmark]
         public string Int64ToString_32Base()
         {
-            return _converter.ToString(_num);
+            return _converter.ToString((ulong)_num);
         }
 
         [Benchmark(Baseline = true)]

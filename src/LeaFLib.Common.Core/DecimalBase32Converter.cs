@@ -23,77 +23,56 @@
             Alphabet = alphabet;
         }
 
-        public string ToString(int num)
+        public string ToString(uint num)
         {
-            if (num < 0)
+            if (num == 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(num), "num is less than 0");
-            }
-
-            if (num < 32)
-            {
-                return Alphabet[num].ToString();
+                return Alphabet[0].ToString();
             }
 
             Span<char> chars = stackalloc char[7];
-            int temp = num & (1 << 30), offset;
-            chars[0] = Alphabet[temp >> 30];
-            for (int i = 1; i < chars.Length; i++)
+            int zeroFlag = 0;
+            for (int i = 0; i < chars.Length; i++)
             {
-                offset = 30 - i * 5;
-                temp = num & (31 << offset);
-                chars[i] = Alphabet[temp >> offset];
+                int index = (int)((num >> (30 - i * 5)) & 0b11111);
+                if (index == 0 && zeroFlag == i)
+                {
+                    zeroFlag++;
+                }
+                chars[i] = Alphabet[index];
             }
 
-            if (chars[0] != Alphabet[0])
+            if (zeroFlag < 1)
             {
                 return new string(chars);
             }
-            for (int i = 1; i < chars.Length - 1; i++)
-            {
-                if (chars[i] != Alphabet[0])
-                {
-                    return new string(chars[i..]);
-                }
-            }
-            return chars[^1].ToString();
+            return chars[zeroFlag..].ToString();
         }
 
-        public string ToString(long num)
+        public string ToString(ulong num)
         {
-            if (num < 0L)
+            if (num == 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(num), "num is less than 0");
-            }
-
-            if (num < 32L)
-            {
-                return Alphabet[(int)num].ToString();
+                return Alphabet[0].ToString();
             }
 
             Span<char> chars = stackalloc char[13];
-            long temp = num & (7L << 60);
-            chars[0] = Alphabet[(int)(temp >> 60)];
-            int offset;
-            for (int i = 1; i < chars.Length; i++)
+            int zeroFlag = 0;
+            for (int i = 0; i < chars.Length; i++)
             {
-                offset = 60 - i * 5;
-                temp = num & (31L << offset);
-                chars[i] = Alphabet[(int)(temp >> offset)];
+                int index = (int)((num >> (60 - i * 5)) & 0b11111);
+                if (index == 0 && zeroFlag == i)
+                {
+                    zeroFlag++;
+                }
+                chars[i] = Alphabet[index];
             }
 
-            if (chars[0] != Alphabet[0])
+            if (zeroFlag < 1)
             {
                 return new string(chars);
             }
-            for (int i = 1; i < chars.Length - 1; i++)
-            {
-                if (chars[i] != Alphabet[0])
-                {
-                    return new string(chars[i..]);
-                }
-            }
-            return chars[^1].ToString();
+            return chars[zeroFlag..].ToString();
         }
 
         public string ToString(DateTimeOffset dateTimeOffset, bool useMillisecond = false)
@@ -101,15 +80,15 @@
             long num = useMillisecond
                 ? dateTimeOffset.ToUnixTimeMilliseconds()
                 : dateTimeOffset.ToUnixTimeSeconds();
-            return ToString(num);
+            return ToString((ulong)num);
         }
 
-        public int ToInt32(ReadOnlySpan<char> span)
+        public uint ToUInt32(ReadOnlySpan<char> span)
         {
             const int header = 7;
             ValidateCharSpan(ref span, header, 1);
 
-            int result = 0, index;
+            uint result = 0; int index;
             for (int i = 1; i <= Math.Min(span.Length, header); i++)
             {
                 index = Alphabet.IndexOf(span[^i]);
@@ -117,14 +96,14 @@
                 {
                     throw new ArgumentException($"Char[{span.Length - i}] not found in the alphabet", nameof(span));
                 }
-                result |= index << ((i - 1) * 5);
+                result |= ((uint)index) << ((i - 1) * 5);
             }
             return result;
         }
 
-        public int ToInt32(string str) => ToInt32(str.AsSpan());
+        public uint ToUInt32(string str) => ToUInt32(str.AsSpan());
 
-        public bool TryToInt32(ReadOnlySpan<char> span, out int value)
+        public bool TryToInt32(ReadOnlySpan<char> span, out uint value)
         {
             const int header = 7;
             if (!TryValidateCharSpan(ref span, header, 1))
@@ -143,19 +122,19 @@
                     value = default;
                     return false;
                 }
-                value |= index << ((i - 1) * 5);
+                value |= ((uint)index) << ((i - 1) * 5);
             }
             return true;
         }
 
-        public bool TryToInt32(string str, out int value) => TryToInt32(str.AsSpan(), out value);
+        public bool TryToUInt32(string str, out uint value) => TryToInt32(str.AsSpan(), out value);
 
-        public long ToInt64(ReadOnlySpan<char> span)
+        public ulong ToUInt64(ReadOnlySpan<char> span)
         {
             const int header = 13;
             ValidateCharSpan(ref span, header, 7);
 
-            long result = 0, index;
+            ulong result = 0; int index;
             for (int i = 1; i <= Math.Min(span.Length, header); i++)
             {
                 index = Alphabet.IndexOf(span[^i]);
@@ -163,14 +142,14 @@
                 {
                     throw new ArgumentException($"Char[{span.Length - i}] not found in the alphabet", nameof(span));
                 }
-                result |= index << ((i - 1) * 5);
+                result |= ((ulong)index) << ((i - 1) * 5);
             }
             return result;
         }
 
-        public long ToInt64(string str) => ToInt64(str.AsSpan());
+        public ulong ToUInt64(string str) => ToUInt64(str.AsSpan());
 
-        public bool TryToInt64(ReadOnlySpan<char> span, out long value)
+        public bool TryToUInt64(ReadOnlySpan<char> span, out ulong value)
         {
             const int header = 13;
             if (!TryValidateCharSpan(ref span, header, 7))
@@ -180,7 +159,7 @@
             }
 
             value = default;
-            long index;
+            int index;
             for (int i = 1; i <= Math.Min(span.Length, header); i++)
             {
                 index = Alphabet.IndexOf(span[^i]);
@@ -189,12 +168,12 @@
                     value = default;
                     return false;
                 }
-                value |= index << ((i - 1) * 5);
+                value |= ((ulong)index) << ((i - 1) * 5);
             }
             return true;
         }
 
-        public bool TryToInt64(string str, out long value) => TryToInt64(str.AsSpan(), out value);
+        public bool TryToUInt64(string str, out ulong value) => TryToUInt64(str.AsSpan(), out value);
 
         private void ValidateCharSpan(ref ReadOnlySpan<char> span, in int header, in int headerMaxValue)
         {
