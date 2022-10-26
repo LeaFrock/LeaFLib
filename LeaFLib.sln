@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demos", "demos", "{0C0CAC14
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeaFLib.Demos.Console", "demos\LeaFLib.Demos.Console\LeaFLib.Demos.Console.csproj", "{8E785C8B-298D-4645-B4CF-E7E243E6908A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeaFLib.Others.Benchmark", "benchmarks\LeaFLib.Others.Benchmark\LeaFLib.Others.Benchmark.csproj", "{E422BBE0-1D28-44EE-A1ED-EEA2CC8FBAD2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{8E785C8B-298D-4645-B4CF-E7E243E6908A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E785C8B-298D-4645-B4CF-E7E243E6908A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E785C8B-298D-4645-B4CF-E7E243E6908A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E422BBE0-1D28-44EE-A1ED-EEA2CC8FBAD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E422BBE0-1D28-44EE-A1ED-EEA2CC8FBAD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E422BBE0-1D28-44EE-A1ED-EEA2CC8FBAD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E422BBE0-1D28-44EE-A1ED-EEA2CC8FBAD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +77,7 @@ Global
 		{47C47B2B-A7F8-402C-B5E0-931D71F77EE0} = {9A15B8C0-710B-4905-83CA-AAA68B97A58E}
 		{ECE96B24-B9C0-4E3E-81AE-83376C9D266D} = {81FAF51E-310D-4E6D-898E-E6E8C55C42A5}
 		{8E785C8B-298D-4645-B4CF-E7E243E6908A} = {0C0CAC14-A04F-4F5E-A084-5F021930346C}
+		{E422BBE0-1D28-44EE-A1ED-EEA2CC8FBAD2} = {9A15B8C0-710B-4905-83CA-AAA68B97A58E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C58CEE81-CDEF-442E-A9DF-6A7008438F6D}
