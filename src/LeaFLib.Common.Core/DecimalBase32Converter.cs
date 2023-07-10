@@ -31,22 +31,23 @@
             }
 
             Span<char> chars = stackalloc char[7];
-            int zeroFlag = 0;
-            for (int i = 0; i < chars.Length; i++)
+            for (int i = chars.Length - 1; i >= 0; i--)
             {
-                int index = (int)((num >> (30 - i * 5)) & 0b11111);
-                if (index == 0 && zeroFlag == i)
-                {
-                    zeroFlag++;
-                }
+                var index = (int)(num & 0x1F);
                 chars[i] = Alphabet[index];
+                num >>= 5;
             }
 
-            if (zeroFlag < 1)
+            int start = 0;
+            for (int i = 0; i < chars.Length; i++)
             {
-                return new string(chars);
+                if (chars[i] != Alphabet[0])
+                {
+                    start = i;
+                    break;
+                }
             }
-            return chars[zeroFlag..].ToString();
+            return chars[start..].ToString();
         }
 
         public string ToString(ulong num)
@@ -57,22 +58,23 @@
             }
 
             Span<char> chars = stackalloc char[13];
-            int zeroFlag = 0;
-            for (int i = 0; i < chars.Length; i++)
+            for (int i = chars.Length - 1; i >= 0; i--)
             {
-                int index = (int)((num >> (60 - i * 5)) & 0b11111);
-                if (index == 0 && zeroFlag == i)
-                {
-                    zeroFlag++;
-                }
+                var index = (int)(num & 0x1F);
                 chars[i] = Alphabet[index];
+                num >>= 5;
             }
 
-            if (zeroFlag < 1)
+            int start = 0;
+            for (int i = 0; i < chars.Length; i++)
             {
-                return new string(chars);
+                if (chars[i] != Alphabet[0])
+                {
+                    start = i;
+                    break;
+                }
             }
-            return chars[zeroFlag..].ToString();
+            return chars[start..].ToString();
         }
 
         public string ToString(DateTimeOffset dateTimeOffset, bool useMillisecond = false)
