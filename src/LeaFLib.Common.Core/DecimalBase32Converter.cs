@@ -30,24 +30,21 @@
                 return Alphabet[0].ToString();
             }
 
-            Span<char> chars = stackalloc char[7];
-            for (int i = chars.Length - 1; i >= 0; i--)
+            const int m = 7;
+            int len = default;
+            var n = num;
+            Span<char> chars = stackalloc char[m];
+            for (int i = 0; i < m; i++)
             {
-                var index = (int)(num & 0x1F);
-                chars[i] = Alphabet[index];
-                num >>= 5;
-            }
-
-            int start = 0;
-            for (int i = 0; i < chars.Length; i++)
-            {
-                if (chars[i] != Alphabet[0])
+                chars[^(i + 1)] = Alphabet[(int)(n & 0x1Fu)];
+                n >>= 5;
+                if (n == 0)
                 {
-                    start = i;
+                    len = i + 1;
                     break;
                 }
             }
-            return chars[start..].ToString();
+            return new string(chars[(m - len)..]);
         }
 
         public string ToString(ulong num)
@@ -57,24 +54,21 @@
                 return Alphabet[0].ToString();
             }
 
-            Span<char> chars = stackalloc char[13];
-            for (int i = chars.Length - 1; i >= 0; i--)
+            const int m = 13;
+            int len = default;
+            var n = num;
+            Span<char> chars = stackalloc char[m];
+            for (int i = 0; i < m; i++)
             {
-                var index = (int)(num & 0x1F);
-                chars[i] = Alphabet[index];
-                num >>= 5;
-            }
-
-            int start = 0;
-            for (int i = 0; i < chars.Length; i++)
-            {
-                if (chars[i] != Alphabet[0])
+                chars[^(i + 1)] = Alphabet[(int)(n & 0x1Ful)];
+                n >>= 5;
+                if (n == 0)
                 {
-                    start = i;
+                    len = i + 1;
                     break;
                 }
             }
-            return chars[start..].ToString();
+            return new string(chars[(m - len)..]);
         }
 
         public string ToString(DateTimeOffset dateTimeOffset, bool useMillisecond = false)
