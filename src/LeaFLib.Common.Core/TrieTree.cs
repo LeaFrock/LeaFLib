@@ -125,12 +125,7 @@ namespace LeaFLib.Common.Core
         }
 
         private static void EnsureSpanValid(ref ReadOnlySpan<TKey> keys, string paramName)
-        {
-            if (keys.Length < 2)
-            {
-                throw new ArgumentException("The length is less than 2.", paramName);
-            }
-        }
+            => ArgumentOutOfRangeException.ThrowIfLessThan(keys.Length, 2, paramName);
 
         private static Match? MatchCore(ref ReadOnlySpan<TKey> keys, int start, TreeNode node)
         {

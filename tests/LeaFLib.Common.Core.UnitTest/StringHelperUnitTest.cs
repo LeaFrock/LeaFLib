@@ -1,5 +1,4 @@
-﻿using System;
-using Xunit;
+﻿using Xunit;
 
 namespace LeaFLib.Common.Core.UnitTest
 {
@@ -7,7 +6,7 @@ namespace LeaFLib.Common.Core.UnitTest
     {
         [Theory]
         [InlineData(0, typeof(ArgumentOutOfRangeException))]
-        [InlineData(7, typeof(ArgumentException))]
+        [InlineData(7, typeof(ArgumentOutOfRangeException))]
         [InlineData(4, default)]
         [InlineData(1024, default)]
         public void RandomBase64String(int length, Type? exceptionType)

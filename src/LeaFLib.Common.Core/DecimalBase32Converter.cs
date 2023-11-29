@@ -15,10 +15,7 @@
         public DecimalBase32Converter(string alphabet)
         {
             ArgumentNullException.ThrowIfNull(alphabet);
-            if (alphabet.Length != 32)
-            {
-                throw new ArgumentException("The length of alphabet is not 32");
-            }
+            ArgumentOutOfRangeException.ThrowIfNotEqual(alphabet.Length, 32);
 
             Alphabet = alphabet;
         }
@@ -173,10 +170,8 @@
 
         private void ValidateCharSpan(ref ReadOnlySpan<char> span, in int header, in int headerMaxValue)
         {
-            if (span.Length < 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(span), "The length is less than 1");
-            }
+            ArgumentOutOfRangeException.ThrowIfLessThan(span.Length, 1);
+
             if (span.Length >= header)
             {
                 int index = Alphabet.IndexOf(span[^header]);

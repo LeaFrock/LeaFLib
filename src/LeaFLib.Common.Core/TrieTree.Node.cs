@@ -16,12 +16,12 @@
             {
                 Key = key;
                 Value = value;
-                Children = new();
+                Children = [];
             }
 
             public TreeNode AsRoot()
             {
-                Children = new();
+                Children = [];
                 return this;
             }
 

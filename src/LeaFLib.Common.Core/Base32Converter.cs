@@ -52,7 +52,7 @@ namespace LeaFLib.Common.Core
             var trimmedInput = input.AsSpan().TrimEnd('=');
             if (trimmedInput.Length == 0)
             {
-                return Array.Empty<byte>();
+                return [];
             }
 
             var output = new byte[trimmedInput.Length * 5 / 8];

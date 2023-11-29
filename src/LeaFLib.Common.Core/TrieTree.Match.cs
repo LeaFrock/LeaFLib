@@ -2,17 +2,11 @@
 {
     public partial class TrieTree<TKey, TValue>
     {
-        public struct Match
+        public readonly struct Match(int index, int length)
         {
-            public Match(int index, int length)
-            {
-                Index = index;
-                Length = length;
-            }
+            public int Index { get; } = index;
 
-            public int Index { get; }
-
-            public int Length { get; }
+            public int Length { get; } = length;
 
             public TValue Value { get; init; } = default!;
         }

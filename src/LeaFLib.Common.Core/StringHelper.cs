@@ -9,18 +9,11 @@ namespace LeaFLib.Common.Core
         /// </summary>
         /// <param name="length">The length of Base64 String</param>
         /// <returns></returns>
-        /// <exception cref="ArgumentOutOfRangeException">The length is less than 1.</exception>
-        /// <exception cref="ArgumentException">The length is not a multiple of 4.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The length is less than 1, or not a multiple of 4.</exception>
         public static string RandomBase64String(int length)
         {
-            if (length < 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(length), "The length is less than 1");
-            }
-            if (length % 4 != 0)
-            {
-                throw new ArgumentException("The length is not a multiple of 4", nameof(length));
-            }
+            ArgumentOutOfRangeException.ThrowIfLessThan(length, 1);
+            ArgumentOutOfRangeException.ThrowIfNotEqual(length % 4, 0);
 
             int byteCount = length * 6 / 8;
             if (byteCount <= 512)

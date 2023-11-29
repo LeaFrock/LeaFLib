@@ -45,7 +45,7 @@ namespace LeaFLib.Extensions.Core
                 using var reader = new StreamReader(stream, detectEncodingFromByteOrderMarks: true, bufferSize: 128, leaveOpen: true);
                 if (reader.Peek() > -1)
                 {
-                    _ = await reader.ReadAsync(new char[1]);
+                    _ = await reader.ReadAsync(new char[1]).ConfigureAwait(false);
                     stream.Position = pos;
                     return reader.CurrentEncoding;
                 }
