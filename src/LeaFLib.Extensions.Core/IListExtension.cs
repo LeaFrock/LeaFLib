@@ -9,31 +9,6 @@ namespace LeaFLib.Extensions.Core
     public static class IListExtension
     {
         /// <summary>
-        /// Determines whether all elements are the same.
-        /// </summary>
-        /// <typeparam name="T">Type</typeparam>
-        /// <param name="source">Items</param>
-        /// <returns>
-        /// <para>If the source count is less than 2, return <c>true</c>;</para>
-        /// <para>If the elements of source are all equal, return <c>true</c>, otherwise return <c>false</c>.</para>
-        /// </returns>
-        public static bool AllSame<T>(this IList<T> source) where T : IEquatable<T>
-        {
-            if (source.Count < 1)
-            {
-                return true;
-            }
-            for (int i = 1; i < source.Count; i++)
-            {
-                if (!source[0].Equals(source[i]))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        /// <summary>
         /// Random a single element from items
         /// </summary>
         /// <typeparam name="T">Type</typeparam>
@@ -71,7 +46,7 @@ namespace LeaFLib.Extensions.Core
             {
                 1 => NoRand(),
                 > 1 => Rand(),
-                _ => Array.Empty<T>()
+                _ => []
             };
 
             T[] NoRand()
@@ -111,7 +86,7 @@ namespace LeaFLib.Extensions.Core
         {
             if (source.Count < 1)
             {
-                return Array.Empty<T>();
+                return [];
             }
 
             if (length < 1)
@@ -125,7 +100,7 @@ namespace LeaFLib.Extensions.Core
 
             if (length == 1)
             {
-                return new T[] { source.RandomSingle()! };
+                return [source.RandomSingle()!];
             }
             if (length == source.Count)
             {
