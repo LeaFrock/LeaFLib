@@ -1,8 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		
@@ -12,7 +10,7 @@
 		<Version>1.0.0</Version>
 		<Product>LeaFLib.Extensions</Product>
 		<Description>LeaFLib.Extensions.Core</Description>
-		<Copyright>Copyright © LeaFrock 2021</Copyright>
+		<Copyright>Copyright © LeaFrock 2024</Copyright>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageTags>csharp;dotnet</PackageTags>
 		<PackageProjectUrl>https://github.com/LeaFrock/LeaFLib</PackageProjectUrl>
