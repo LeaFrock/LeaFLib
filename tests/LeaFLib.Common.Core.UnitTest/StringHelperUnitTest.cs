@@ -10,7 +10,7 @@ namespace LeaFLib.Common.Core.UnitTest
         [InlineData(7, typeof(ArgumentException))]
         [InlineData(4, default)]
         [InlineData(1024, default)]
-        public void RandomBase64String(int length, Type exceptionType)
+        public void RandomBase64String(int length, Type? exceptionType)
         {
             if (exceptionType is null)
             {
