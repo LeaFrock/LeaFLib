@@ -27,21 +27,22 @@
                 return Alphabet[0].ToString();
             }
 
-            const int m = 7;
-            int len = default;
+            const int length = (sizeof(uint) * 8 + 4) / 5;
+            int head = 0;
             var n = num;
-            Span<char> chars = stackalloc char[m];
-            for (int i = 0; i < m; i++)
+            Span<char> chars = stackalloc char[length];
+            var a = Alphabet.AsSpan();
+            for (int i = 0; i < chars.Length; i++)
             {
-                chars[^(i + 1)] = Alphabet[(int)(n & 0x1Fu)];
+                chars[^(i + 1)] = a[(int)(n & 0x1Fu)];
                 n >>= 5;
                 if (n == 0)
                 {
-                    len = i + 1;
+                    head = length - 1 - i;
                     break;
                 }
             }
-            return new string(chars[(m - len)..]);
+            return new string(chars[head..]);
         }
 
         public string ToString(ulong num)
@@ -51,21 +52,22 @@
                 return Alphabet[0].ToString();
             }
 
-            const int m = 13;
-            int len = default;
+            const int length = (sizeof(ulong) * 8 + 4) / 5; ;
+            int head = 0;
             var n = num;
-            Span<char> chars = stackalloc char[m];
-            for (int i = 0; i < m; i++)
+            Span<char> chars = stackalloc char[length];
+            var a = Alphabet.AsSpan();
+            for (int i = 0; i < chars.Length; i++)
             {
-                chars[^(i + 1)] = Alphabet[(int)(n & 0x1Ful)];
+                chars[^(i + 1)] = a[(int)(n & 0x1Ful)];
                 n >>= 5;
                 if (n == 0)
                 {
-                    len = i + 1;
+                    head = length - 1 - i;
                     break;
                 }
             }
-            return new string(chars[(m - len)..]);
+            return new string(chars[head..]);
         }
 
         public string ToString(DateTimeOffset dateTimeOffset, bool useMillisecond = false)
